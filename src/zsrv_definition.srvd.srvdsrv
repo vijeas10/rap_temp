@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service defiition'
+define service ZSRV_DEFINITION {
+  expose zc_uxteam_vije;
+}

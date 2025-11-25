@@ -1,0 +1,52 @@
+managed;
+strict ( 2 );
+with draft;
+
+define behavior for zi_app_interface_view alias UXTeam
+implementation in class zbp_i_app_interface_view unique
+persistent table zrap_app_table
+draft table zdr_table_vije
+lock master
+total etag LastChangedAt
+//total etag LastChangedAt
+authorization master ( global )
+etag master LocalLastChangedAt
+// total etag LastChangedAt
+{
+  create;
+  update;
+  delete;
+
+  //  mandatory actions needs to be added in case of DRAFT application enabled
+  draft action Edit;
+  draft action Discard;
+  draft action Resume;
+  draft action Activate optimized;
+  draft determine action Prepare;
+
+  field ( numbering : managed, readonly ) Id;//System will take care about this field
+  field ( readonly ) Active, Salary;
+  field ( readonly ) LastChangedAt, LocalLastChangedAt;
+
+  action ( features : instance ) setActive result [1] $self;
+  determination changeSalary on save { field Role; }
+  validation validateAge on save { field Age; create; }
+  action CopyMember result [1] $self;
+  mapping for zrap_app_table
+    {
+      Id                 = id;
+      FirstName          = firstName;
+      LastName           = lastName;
+      Age                = age;
+      Role               = role;
+      Salary             = salary;
+      Active             = active;
+      LastChangedAt      = last_changed_at;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+  side effects
+  {
+    field Role affects field Salary;
+  }
+
+}

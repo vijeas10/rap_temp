@@ -1,0 +1,58 @@
+managed;// implementation in class zcl_bp_common_impl1 unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_uxteam_vije alias UXTeam
+implementation in class zbp_i_uxteam_vije unique
+persistent table zux_team
+draft table zdraft_table1
+lock master
+total etag LastChangedAt
+authorization master ( global )
+etag master LastChangedAt
+
+//late numbering
+early numbering
+// 4.Id Field will be read Only in case of Numbering
+{
+  create;
+  update;
+  delete;
+  draft action Activate optimized;
+  draft action Resume;
+  draft action Edit;
+  draft action Discard;
+  draft determine action Prepare;
+
+  // Read Only fields
+  field ( readonly ) Active, Salary, Id;
+  field ( readonly ) LastChangedAt, LocalLastChangedAt;
+  //1.  Set Member as Active and Active Field will be read Only
+  action ( features : instance ) setActive result [1] $self;
+  //Copy Action
+  action CopyMember result [1] $self;
+
+  //3. Determination on Salary Change Role also get changed and Salry Field will be read Only
+  determination changeSalary on save { field Role; }
+  // 2. Validation for Age
+  validation validateAge on save { field Age; }
+
+  mapping for zux_team
+    {
+      Id                 = id;
+      FirstName          = firstName;
+      LastName           = lastName;
+      Age                = age;
+      Role               = role;
+      Salary             = salary;
+      Active             = active;
+      LastChangedAt      = last_changed_at;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+  side effects
+  {
+    field Role affects field Salary;
+    //      action CopyMember affects $self;
+  }
+
+}

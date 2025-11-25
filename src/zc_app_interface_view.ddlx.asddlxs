@@ -1,0 +1,78 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: { typeName: 'UX Team',
+                typeNamePlural: 'UX Team',
+                title: { type: #STANDARD, label: 'UXTeam', value: 'Id' }  },
+                presentationVariant: [{ sortOrder: [{ by: 'Id', direction:  #ASC }] }] }
+
+annotate view zc_app_interface_view with
+{
+  @UI.facet: [ { id:             'Demo',
+                purpose:         #STANDARD,
+                type:            #IDENTIFICATION_REFERENCE,
+                label:           'Demo',
+                position:        10 } ,
+
+                { id:             'idHeader',
+                purpose:         #HEADER,
+                type:            #DATAPOINT_REFERENCE,
+                label:           'First Name',
+                position:        10,
+                targetQualifier: 'qfFirstName'} ,
+
+                { id:             'idHeader1',
+                purpose:         #HEADER,
+                type:            #DATAPOINT_REFERENCE,
+                label:           'Last Name',
+                position:        20,
+                targetQualifier: 'qfLastName'}
+                ]
+
+  @UI:{ identification: [{ position: 1, label: 'Id' }] }
+  Id;
+
+  @UI: {  lineItem:       [ { position: 20 } ],
+        identification: [ { position: 20 } ],
+        selectionField: [ { position: 20 } ] }
+
+  @UI.dataPoint.qualifier: 'qfFirstName'
+
+  Firstname;
+
+
+  @UI.dataPoint.qualifier: 'qfLastName'
+  @UI: {  lineItem:       [ { position: 30 } ],
+        identification: [ { position: 30 } ],
+        selectionField: [ { position: 30 } ] }
+  Lastname;
+
+  @UI: {  lineItem:       [ { position: 40 } ],
+        identification: [ { position: 40 } ] }
+  Age;
+  @UI.lineItem: [{  position: 80, label: 'Can Vote' }]
+  Canvote;
+
+  @UI: {  lineItem:       [ { position: 50 } ],
+        identification: [ { position: 50 } ] }
+  Role;
+
+  @UI: {  lineItem:       [ { position: 60 } ],
+       identification: [ { position: 60 } ],
+       selectionField: [ { position: 60 } ] }
+  Salary;
+
+  @UI: {  lineItem:       [ { position: 70 },
+                            { type: #FOR_ACTION, dataAction: 'CopyMember', label: 'Copy Member' },
+                            { type: #FOR_ACTION, dataAction: 'setActive', label: 'Set Active' }
+                           ],
+         identification: [ { position: 70 } ]
+        }
+  Active;
+
+  @UI.hidden: true
+  LastChangedAt;
+
+  @UI.hidden: true
+  LocalLastChangedAt;
+
+}

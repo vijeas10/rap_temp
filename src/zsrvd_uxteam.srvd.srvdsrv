@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service defiition'
+define service Zsrvd_uxteam {
+  expose zc_app_interface_view;
+}

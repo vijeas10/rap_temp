@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service defiition'
+define service Zxl_sdf {
+  expose zvije_c_xl_user;
+  expose zvije_c_xl_data;
+}

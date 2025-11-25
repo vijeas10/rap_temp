@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service defiition'
+define service Zexcel_uplaod {
+  expose zvije_c_xl_user;
+  expose zvije_c_xl_data;
+}

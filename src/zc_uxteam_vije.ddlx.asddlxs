@@ -1,0 +1,72 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: { typeName: 'UX Team',
+                typeNamePlural: 'UX Teams',
+                title: { type: #STANDARD, label: 'UXTeam', value: 'Id' }  }
+//                presentationVariant: [{ sortOrder: [{ by: 'Id', direction:  #ASC }] }]
+ }
+annotate view zc_uxteam_vije
+    with 
+{
+  @UI.facet: [
+                 { id: 'idHeader' ,
+                   position: 10,
+                   purpose: #HEADER,
+                   type: #DATAPOINT_REFERENCE,
+                   targetQualifier: 'qfFirstName'},
+
+                 { id: 'idHeader2' ,
+                   position: 20,
+                   purpose: #HEADER,
+                   type: #DATAPOINT_REFERENCE,
+                   targetQualifier: 'qfLastName'},
+
+               {
+                id:             'Demo',
+                purpose:         #STANDARD,
+                type:            #IDENTIFICATION_REFERENCE,
+                label:           'Demo',
+                position:        30 }
+               ]
+
+  @UI:{ identification: [{ position: 1, label: 'Id' }] }
+  Id;
+
+  @UI: {  lineItem:       [ { position: 20 } ],
+        identification: [ { position: 20 } ],
+        selectionField: [ { position: 20 } ],
+         dataPoint: { qualifier: 'qfFirstName', title: 'First Name' }}
+  Firstname;
+
+  @UI: {  lineItem:       [ { position: 30 } ],
+        identification: [ { position: 30 } ],
+        selectionField: [ { position: 30 } ] ,
+        dataPoint: { qualifier: 'qfLastName'  } }
+  Lastname;
+
+  @UI: {  lineItem:       [ { position: 40 } ],
+        identification: [ { position: 40 } ] }
+  Age;
+
+  @UI: {  lineItem:       [ { position: 50 } ],
+        identification: [ { position: 50 } ] }
+  Role;
+
+  @UI: {  lineItem:       [ { position: 60 }
+  //  ,{ type: #FOR_ACTION, dataAction: 'CopyMember', label: 'Copy Member' }
+   ],
+       identification: [ { position: 60 } ],
+       selectionField: [ { position: 60 } ] }
+  Salary;
+
+  @UI: {  lineItem:       [ { position: 70 }, { type: #FOR_ACTION, dataAction: 'setActive', label: 'Set Active' } ],
+          identification: [ { position: 70 } ] }
+  Active;
+  @UI.hidden: true
+  //@EndUserText.label: 'Last Changed At'
+  LastChangedAt;
+
+  @UI.hidden: true
+  LocalLastChangedAt;
+
+}
