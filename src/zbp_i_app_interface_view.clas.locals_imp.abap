@@ -114,7 +114,7 @@ CLASS lhc_UXTeam IMPLEMENTATION.
 
       IF member-Age < 21.
         APPEND VALUE #( %tky = member-%tky
-                        %msg = new_message_with_text( severity = if_abap_behv_message=>severity-error
+                        %msg = new_message_with_text( severity = if_abap_behv_message=>severity-warning
                                                       text     = 'Age is Less than 21' ) )
                TO reported-uxteam.
       ENDIF.
