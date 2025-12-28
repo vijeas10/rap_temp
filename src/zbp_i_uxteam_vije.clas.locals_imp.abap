@@ -10,8 +10,8 @@ CLASS lhc_UXTeam DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS earlynumbering_create FOR NUMBERING
       IMPORTING entities FOR CREATE UXTeam.
 
-    METHODS CopyMember FOR MODIFY
-      IMPORTING keys FOR ACTION UXTeam~CopyMember RESULT result.
+*    METHODS CopyMember FOR MODIFY
+*      IMPORTING keys FOR ACTION UXTeam~CopyMember RESULT result.
 
     METHODS setActive FOR MODIFY
       IMPORTING keys FOR ACTION UXTeam~setActive RESULT result.
@@ -21,6 +21,16 @@ CLASS lhc_UXTeam DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS validateAge FOR VALIDATE ON SAVE
       IMPORTING keys FOR UXTeam~validateAge.
+    METHODS CopyMember FOR MODIFY
+      IMPORTING keys FOR ACTION UXTeam~CopyMember.
+    METHODS CreateInstance FOR MODIFY
+      IMPORTING keys FOR ACTION UXTeam~CreateInstance.
+    METHODS GetDefaultsForCreate FOR READ
+      IMPORTING keys FOR FUNCTION UXTeam~GetDefaultsForCreate RESULT result.
+    METHODS precheck_update FOR PRECHECK
+      IMPORTING entities FOR UPDATE UXTeam.
+*    METHODS CreateInstance FOR MODIFY
+*      IMPORTING keys FOR ACTION UXTeam~CreateInstance RESULT result.
 
 ENDCLASS.
 
@@ -133,43 +143,43 @@ CLASS lhc_UXTeam IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD CopyMember.
-    DATA  : wtl_member TYPE TABLE FOR CREATE ZI_uxteam_vije.
+*  METHOD CopyMember.
+*    DATA  : wtl_member TYPE TABLE FOR CREATE ZI_uxteam_vije.
+**
+***   Reading Selected data from front end
+*    READ ENTITIES OF ZI_uxteam_vije IN LOCAL MODE
+*    ENTITY UXTeam
+*    ALL FIELDS WITH CORRESPONDING #( keys )
+*    RESULT DATA(members).
+*    DATA(wol_random_generator) = cl_abap_random=>create( seed = cl_abap_random=>seed( ) ).
+*    DATA(wl_random_number) = wol_random_generator->intinrange( low = 1 high = 9999 ).
+*    LOOP AT members ASSIGNING FIELD-SYMBOL(<fs_members>).
+*      APPEND VALUE #(
+**                      %key      = <fs_members>-%key
+*                       %is_draft  = <fs_members>-%is_draft
+**                      %data =  <fs_members>-%data
+*                      Id        = wl_random_number
+*                      Firstname = <fs_members>-Firstname
+*                      Lastname  = <fs_members>-Lastname
+*                      Age       = <fs_members>-Age
+*                      Role      = <fs_members>-Role
+*                      Salary    = <fs_members>-Salary
+*                      Active    = <fs_members>-Active
+*                      LastChangedAt = <fs_members>-LastChangedAt
+*                      LocalLastChangedAt  = <fs_members>-LocalLastChangedAt
 *
-**   Reading Selected data from front end
-    READ ENTITIES OF ZI_uxteam_vije IN LOCAL MODE
-    ENTITY UXTeam
-    ALL FIELDS WITH CORRESPONDING #( keys )
-    RESULT DATA(members).
-    DATA(wol_random_generator) = cl_abap_random=>create( seed = cl_abap_random=>seed( ) ).
-    DATA(wl_random_number) = wol_random_generator->intinrange( low = 1 high = 9999 ).
-    LOOP AT members ASSIGNING FIELD-SYMBOL(<fs_members>).
-      APPEND VALUE #(
-*                      %key      = <fs_members>-%key
-                       %is_draft  = <fs_members>-%is_draft
-*                      %data =  <fs_members>-%data
-                      Id        = wl_random_number
-                      Firstname = <fs_members>-Firstname
-                      Lastname  = <fs_members>-Lastname
-                      Age       = <fs_members>-Age
-                      Role      = <fs_members>-Role
-                      Salary    = <fs_members>-Salary
-                      Active    = <fs_members>-Active
-                      LastChangedAt = <fs_members>-LastChangedAt
-                      LocalLastChangedAt  = <fs_members>-LocalLastChangedAt
-
-               ) TO wtl_member.
-    ENDLOOP.
-*    Create Copy Entity
-    MODIFY ENTITIES OF ZI_uxteam_vije IN LOCAL MODE
-    ENTITY UXTeam
-    CREATE FIELDS ( Id Firstname Lastname Age Role Salary Active LastChangedAt LocalLastChangedAt )
-    WITH  wtl_member
-    MAPPED DATA(copied_member).
+*               ) TO wtl_member.
+*    ENDLOOP.
+**    Create Copy Entity
+*    MODIFY ENTITIES OF ZI_uxteam_vije IN LOCAL MODE
+*    ENTITY UXTeam
+*    CREATE FIELDS ( Id Firstname Lastname Age Role Salary Active LastChangedAt LocalLastChangedAt )
+*    WITH  wtl_member
+*    MAPPED DATA(copied_member).
+**
+*    mapped-uxteam = copied_member-uxteam.
 *
-    mapped-uxteam = copied_member-uxteam.
-
-  ENDMETHOD.
+*  ENDMETHOD.
 
   METHOD earlynumbering_create.
 *    " Implement Early Numbering
@@ -185,4 +195,117 @@ CLASS lhc_UXTeam IMPLEMENTATION.
 *
   METHOD get_global_authorizations.
   ENDMETHOD.
+  METHOD CopyMember.
+    DATA: wtl_member TYPE TABLE FOR CREATE ZI_uxteam_vije.
+*          failed_1 TYPE RESPONSE FOR FAILED zi_uxteam_vije.
+
+    DATA(wol_random_generator) = cl_abap_random=>create( seed = cl_abap_random=>seed( ) ).
+    DATA(wl_random_number) = wol_random_generator->intinrange( low = 1 high = 9999 ).
+    READ ENTITIES OF ZI_uxteam_vije IN LOCAL MODE
+    ENTITY UXTeam
+    ALL FIELDS WITH CORRESPONDING #( keys )
+    RESULT DATA(wtl_copied).
+
+
+    LOOP AT wtl_copied ASSIGNING FIELD-SYMBOL(<fs_members>).
+      APPEND VALUE #(
+                      %cid = keys[ 1 ]-%cid
+                       %is_draft  = <fs_members>-%is_draft
+*                      Id        = wl_random_number
+                      Firstname = <fs_members>-Firstname
+                      Lastname  = <fs_members>-Lastname
+                      Age       = <fs_members>-Age
+                      Role      = <fs_members>-Role
+                      Salary    = <fs_members>-Salary
+                      Active    = <fs_members>-Active
+                      LastChangedAt = <fs_members>-LastChangedAt
+                      LocalLastChangedAt  = <fs_members>-LocalLastChangedAt
+               ) TO wtl_member.
+    ENDLOOP.
+
+*    failed_1 = failed.
+    MODIFY ENTITIES OF ZI_uxteam_vije  IN LOCAL MODE
+    ENTITY UXTeam
+    CREATE FIELDS (  Firstname Lastname Age Role Salary Active LastChangedAt LocalLastChangedAt )
+    WITH  wtl_member
+    MAPPED DATA(copied_member).
+    mapped-uxteam = copied_member-uxteam.
+
+  ENDMETHOD.
+
+
+  METHOD CreateInstance.
+    MODIFY ENTITIES OF ZI_uxteam_vije IN LOCAL MODE
+   ENTITY UXTeam
+   CREATE FROM VALUE #( FOR wel_key IN keys
+                        (
+                         %cid = keys[ 1 ]-%cid
+                         Firstname = 'First name'
+                         Lastname = 'Last Name'
+                         Role      = 'UX Developer'
+                        Age = 25
+                         %control = VALUE #(
+                                                 Id = if_abap_behv=>mk-off
+                                                 Firstname = if_abap_behv=>mk-on
+                                                 Lastname  = if_abap_behv=>mk-on
+                                                 Age       = if_abap_behv=>mk-on
+                                                 Role      = if_abap_behv=>mk-on
+                                                 Salary    = if_abap_behv=>mk-off
+                                                 Active    = if_abap_behv=>mk-off
+                                             )
+                         )
+
+                       )
+   MAPPED mapped
+   FAILED failed
+   REPORTED reported.
+  ENDMETHOD.
+
+  METHOD precheck_update.
+
+    LOOP AT entities ASSIGNING FIELD-SYMBOL(<fs_entity>).
+*    Fetch DB data
+      READ ENTITIES OF  ZI_uxteam_vije IN LOCAL MODE
+      ENTITY UXTeam
+      ALL FIELDS
+      WITH VALUE #( ( Id = <fs_entity>-Id ) )
+      RESULT DATA(wtl_active).
+      IF    wtl_active IS INITIAL.
+        RETURN.
+      ENDIF.
+
+*        Update allowed only if user is active otherwise not.
+
+      IF wtl_active[ 1 ]-Active IS INITIAL.
+
+        APPEND VALUE #( %tky = <fs_entity>-%tky  ) TO  failed-uxteam.
+
+        APPEND VALUE #(  %tky = <fs_entity>-%tky
+                       %msg = new_message_with_text( severity = if_abap_behv_message=>severity-error
+                                                       text    = 'Team Member Not active so cannot be updated'
+                                                     )
+                         ) TO reported-uxteam.
+*      ELSE.
+*        APPEND VALUE #(  %tky = <fs_entity>-%tky
+*                         %msg = new_message_with_text( severity = if_abap_behv_message=>severity-success
+*                                                         text    = 'Team Member data updated'
+*                                                       )
+*                           ) TO reported-uxteam.
+
+
+      ENDIF.
+
+    ENDLOOP.
+
+
+  ENDMETHOD.
+
+  METHOD GetDefaultsForCreate.
+
+    result =  VALUE #( ( %cid = keys[ 1 ]-%cid
+                        %param-Role = 'UX Developer'
+                        )
+                   ) .
+  ENDMETHOD.
+
 ENDCLASS.

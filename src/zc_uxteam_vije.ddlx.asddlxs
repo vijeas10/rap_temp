@@ -59,7 +59,9 @@ annotate view zc_uxteam_vije
        selectionField: [ { position: 60 } ] }
   Salary;
 
-  @UI: {  lineItem:       [ { position: 70 }, { type: #FOR_ACTION, dataAction: 'setActive', label: 'Set Active' } ],
+  @UI: {  lineItem:       [ { position: 70 }, { type: #FOR_ACTION, dataAction: 'setActive', label: 'Set Active' },
+                                               { type: #FOR_ACTION, dataAction: 'CopyMember', label: 'Copy' },
+                                               { type: #FOR_ACTION, dataAction: 'CreateInstance', label: 'Create Instance' } ],
           identification: [ { position: 70 } ] }
   Active;
   @UI.hidden: true

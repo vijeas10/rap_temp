@@ -11,11 +11,14 @@ use etag
   use delete;
   use action setActive;
   use action CopyMember;
+  use action CreateInstance;
+  use function GetDefaultsForCreate;
   //  mandatory actions needs to be added in case of DRAFT application enabled
   use action Edit;
   use action Discard;
   use action Resume;
   use action Activate;
   use action Prepare;
+
 
 }

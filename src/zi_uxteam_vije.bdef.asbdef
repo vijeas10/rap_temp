@@ -15,8 +15,9 @@ etag master LastChangedAt
 early numbering
 // 4.Id Field will be read Only in case of Numbering
 {
-  create;
-  update;
+  create { default function; }
+  update ( precheck );
+  //  update;
   delete;
   draft action Activate optimized;
   draft action Resume;
@@ -27,11 +28,16 @@ early numbering
   // Read Only fields
   field ( readonly ) Active, Salary, Id;
   field ( readonly ) LastChangedAt, LocalLastChangedAt;
+  //  Non-factory action
   //1.  Set Member as Active and Active Field will be read Only
   action ( features : instance ) setActive result [1] $self;
-  //Copy Action
-  action CopyMember result [1] $self;
+  //Instance Action Copy Action
+  //  action CopyMember result [1] $self;
 
+  //  Factory Action (Instance  Bound)
+  factory action CopyMember [1];
+  //Factory action (Static bound / Default )
+  static factory action CreateInstance [1];
   //3. Determination on Salary Change Role also get changed and Salry Field will be read Only
   determination changeSalary on save { field Role; }
   // 2. Validation for Age
@@ -52,7 +58,7 @@ early numbering
   side effects
   {
     field Role affects field Salary;
-    //      action CopyMember affects $self;
+    action setActive affects $self;
   }
 
 }
