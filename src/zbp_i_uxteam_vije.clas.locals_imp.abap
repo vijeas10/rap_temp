@@ -48,7 +48,6 @@ CLASS lhc_UXTeam IMPLEMENTATION.
  FAILED failed
  REPORTED reported.
 
-
     " Fill the response table
     READ ENTITIES OF ZI_uxteam_vije IN LOCAL MODE
     ENTITY UXTeam
@@ -80,6 +79,16 @@ CLASS lhc_UXTeam IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD validateAge.
+*  Check whether data already exist in DB or not
+*  in case of update data should exist in DB
+    DATA(wl_Id) = VALUE #( keys[ 1 ]-Id OPTIONAL ).
+    SELECT COUNT( Id )
+            FROM zux_team
+            WHERE Id = @wl_id
+            INTO @DATA(wl_count).
+    IF sy-dbcnt = 0.
+      CLEAR wl_count.
+    ENDIF.
 *  At the time of Creating Entry Validate the Age > 21
     READ ENTITIES OF ZI_uxteam_vije IN LOCAL MODE
     ENTITY UXTeam
@@ -99,12 +108,26 @@ CLASS lhc_UXTeam IMPLEMENTATION.
         " Fill the Failed table to just show  that  current transaction has failed
 *        APPEND VALUE #( %tky = member-%tky ) TO failed-uxteam.
       ELSE.
+*In case of create provide below
+        IF wl_count = 0.
 
-        APPEND VALUE #( %tky =  member-%tky
-                %msg = new_message_with_text( severity = if_abap_behv_message=>severity-success
-                                               text    = 'Team Member is ADDED'
-                                              )
-                 ) TO reported-uxteam.
+
+          APPEND VALUE #( %tky =  member-%tky
+                  %msg = new_message_with_text( severity = if_abap_behv_message=>severity-success
+                                                 text    = 'Team Member is ADDED'
+                                                )
+                   ) TO reported-uxteam.
+
+* In case of Update provide different message
+        ELSE.
+          APPEND VALUE #( %tky =  member-%tky
+                 %msg = new_message_with_text( severity = if_abap_behv_message=>severity-success
+                                                text    = 'Team Member is Updated Successfully'
+                                               )
+                  ) TO reported-uxteam.
+
+
+        ENDIF.
       ENDIF.
 
     ENDLOOP.
