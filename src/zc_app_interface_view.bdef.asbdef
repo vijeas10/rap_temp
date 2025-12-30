@@ -10,6 +10,7 @@ define behavior for zc_app_interface_view //alias <alias_name>
 
   use action setActive;
   use action CopyMember;
+  use action Updateinfo;
   //  mandatory actions needs to be added in case of DRAFT application enabled
   use action Edit;
   use action Discard;

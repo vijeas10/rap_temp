@@ -15,6 +15,8 @@ CLASS lhc_UXTeam DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING REQUEST requested_authorizations FOR UXTeam RESULT result.
     METHODS CopyMember FOR MODIFY
       IMPORTING keys FOR ACTION UXTeam~CopyMember RESULT result.
+    METHODS Updateinfo FOR MODIFY
+      IMPORTING keys FOR ACTION UXTeam~Updateinfo RESULT result.
 
 ENDCLASS.
 
@@ -156,4 +158,40 @@ CLASS lhc_UXTeam IMPLEMENTATION.
     "
     mapped-uxteam = copied_member-uxteam.
   ENDMETHOD.
+  METHOD Updateinfo.
+
+    READ ENTITIES OF zi_app_interface_view IN LOCAL MODE
+    ENTITY UXTeam
+    FIELDS ( Active )
+    WITH CORRESPONDING #( keys )
+    RESULT DATA(wtl_data).
+
+    MODIFY ENTITIES OF zi_app_interface_view IN LOCAL MODE
+    ENTITY UXTeam
+    UPDATE  FIELDS ( Active ) WITH VALUE #( (
+                                      %tky =  keys[ 1 ]-%tky
+                                      Active = keys[ 1 ]-%param-Active
+                                      ) ) .
+*    MODIFY ENTITIES OF zi_app_interface_view IN LOCAL MODE
+*    ENTITY UXTeam
+*    UPDATE
+*    SET FIELDS WITH VALUE #( (
+*                                      %tky =  keys[ 1 ]-%tky
+*                                      Active = keys[ 1 ]-%param-Active
+*
+*                                      ) ) .
+
+
+
+*    Read updated Data
+    READ ENTITIES OF zi_app_interface_view IN LOCAL MODE
+    ENTITY UXTeam
+    FIELDS ( Active )
+    WITH CORRESPONDING #( keys )
+    RESULT DATA(wtl_data1).
+*    Send back the updated data to front end
+    result = CORRESPONDING #( wtl_data1 ).
+
+  ENDMETHOD.
+
 ENDCLASS.

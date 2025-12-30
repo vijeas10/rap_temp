@@ -63,7 +63,8 @@ annotate view zc_app_interface_view with
 
   @UI: {  lineItem:       [ { position: 70 },
                             { type: #FOR_ACTION, dataAction: 'CopyMember', label: 'Copy Member' },
-                            { type: #FOR_ACTION, dataAction: 'setActive', label: 'Set Active' }
+                            { type: #FOR_ACTION, dataAction: 'setActive', label: 'Set Active' },
+                            { type: #FOR_ACTION, dataAction: 'Updateinfo', label: 'Update Info' }
                            ],
          identification: [ { position: 70 } ]
         }

@@ -32,6 +32,8 @@ etag master LocalLastChangedAt
   determination changeSalary on save { field Role; }
   validation validateAge on save { field Age; create; }
   action CopyMember result [1] $self;
+  //  Ation With parameter
+  action Updateinfo parameter zv_abstract_entity result [1] $self;
   mapping for zrap_app_table
     {
       Id                 = id;
