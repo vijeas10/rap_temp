@@ -87,23 +87,60 @@ CLASS zcl_eml_class_vije IMPLEMENTATION.
 *    DELETE FROM VALUE #( ( Id = '9288' ) )
 
     " Modify -Execute Action
-    MODIFY ENTITIES OF ZI_uxteam_vije
-           ENTITY UXTeam
-           EXECUTE setActive
-           FROM VALUE #( ( Id = '4974' ) )
-           " TODO: variable is assigned but never used (ABAP cleaner)
-           MAPPED DATA(wtl_mapped)
-           FAILED DATA(wtl_failed)
-           " TODO: variable is assigned but never used (ABAP cleaner)
-           REPORTED DATA(wtl_reported).
+*    MODIFY ENTITIES OF ZI_uxteam_vije
+*           ENTITY UXTeam
+*           EXECUTE setActive
+*           FROM VALUE #( ( Id = '4974' ) )
+*           " TODO: variable is assigned but never used (ABAP cleaner)
+*           MAPPED DATA(wtl_mapped)
+*           FAILED DATA(wtl_failed)
+*           " TODO: variable is assigned but never used (ABAP cleaner)
+*           REPORTED DATA(wtl_reported).
+
+    DATA create_bank TYPE STRUCTURE FOR CREATE i_banktp.
+    create_bank = VALUE #( bankcountry = 'CZ'
+                           bankinternalid = '5501'
+                           longbankname = 'Bank name'
+                           longbankbranch = 'Bank branch'
+                           banknumber = '5501'
+                           bankcategory = ''
+                           banknetworkgrouping = ''
+                         ).
+
+    MODIFY ENTITIES OF i_banktp
+        ENTITY bank
+        CREATE FIELDS ( bankcountry
+                        bankinternalid
+                        longbankname
+                        longbankbranch
+                        banknumber
+                        bankcategory
+                        banknetworkgrouping
+                      )
+        WITH VALUE #( (
+            %cid = 'cid1'
+            bankcountry         = create_bank-bankcountry
+            bankinternalid      = create_bank-bankinternalid
+            longbankname        = create_bank-longbankname
+            longbankbranch      = create_bank-longbankbranch
+            banknumber          = create_bank-banknumber
+            bankcategory        = create_bank-bankcategory
+            banknetworkgrouping = create_bank-banknetworkgrouping
+            )  )
+       MAPPED DATA(mapped) REPORTED DATA(reported) FAILED DATA(failed).
+
+    COMMIT ENTITIES
+     RESPONSE OF i_banktp
+         FAILED DATA(wtl_failed)
+         REPORTED DATA(reported_commit).
     IF wtl_failed IS NOT INITIAL.
       out->write( data = wtl_failed
                   name = 'Failed' ).
 
     ELSE.
-      COMMIT ENTITIES RESPONSE OF ZI_uxteam_vije
-      " TODO: variable is assigned but never used (ABAP cleaner)
-             FAILED DATA(commit_failed).
+*      COMMIT ENTITIES RESPONSE OF ZI_uxteam_vije
+*      " TODO: variable is assigned but never used (ABAP cleaner)
+*             FAILED DATA(commit_failed).
       out->write( 'Data Updated in Table ZUX_TEAM'   ).
     ENDIF.
   ENDMETHOD.
