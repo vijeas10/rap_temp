@@ -1,4 +1,6 @@
 CLASS zbp_i_app_interface_view DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_app_interface_view.
+protected section.
+private section.
 ENDCLASS.
 
 

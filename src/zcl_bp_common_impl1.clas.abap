@@ -1,4 +1,6 @@
 CLASS zcl_bp_common_impl1 DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_uxteam_vije.
+protected section.
+private section.
 ENDCLASS.
 
 

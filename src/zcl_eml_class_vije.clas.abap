@@ -11,7 +11,10 @@ CLASS zcl_eml_class_vije DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_eml_class_vije IMPLEMENTATION.
+
+CLASS ZCL_EML_CLASS_VIJE IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
     " TODO: variable is assigned but only used in commented-out code (ABAP cleaner)
     DATA wtl_data TYPE TABLE FOR CREATE ZI_uxteam_vije.

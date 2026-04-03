@@ -3,6 +3,6 @@ define abstract entity zv_abstract_entity
   //  with parameters parameter_name : parameter_type
 {
 
-  @EndUserText.label: 'User Status'
+  @EndUserText.label: 'User Status:Active(Y/N)'
   Active : abap_boolean;
 }

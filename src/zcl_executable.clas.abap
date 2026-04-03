@@ -4,10 +4,15 @@ CLASS zcl_executable DEFINITION
 
   PUBLIC SECTION.
     INTERFACES if_oo_adt_classrun.
+protected section.
+private section.
 ENDCLASS.
 
 
-CLASS zcl_executable IMPLEMENTATION.
+
+CLASS ZCL_EXECUTABLE IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
     " TODO: variable is assigned but only used in commented-out code (ABAP cleaner)
     DATA r_carrid TYPE RANGE OF /dmo/flight-carrier_id.

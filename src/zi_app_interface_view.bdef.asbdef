@@ -50,6 +50,8 @@ etag master LocalLastChangedAt
   side effects
   {
     field Role affects field Salary;
+    //    field Id affects $self;
+
   }
 
 }

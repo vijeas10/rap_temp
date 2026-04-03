@@ -20,7 +20,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_amdp_class IMPLEMENTATION.
+CLASS ZCL_AMDP_CLASS IMPLEMENTATION.
+
 
   METHOD get_flight BY DATABASE PROCEDURE
                     FOR HDB
@@ -32,6 +33,7 @@ CLASS zcl_amdp_class IMPLEMENTATION.
 
   ENDMETHOD.
 
+
   METHOD get_flight_details BY DATABASE FUNCTION
                               FOR HDB
                                LANGUAGE SQLSCRIPT
@@ -41,5 +43,4 @@ CLASS zcl_amdp_class IMPLEMENTATION.
                        WHERE carrier_id = :iv_carrid;
 
   ENDMETHOD.
-
 ENDCLASS.

@@ -1,4 +1,6 @@
 CLASS zbp_i_uxteam_vije DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_uxteam_vije.
+protected section.
+private section.
 ENDCLASS.
 
 
