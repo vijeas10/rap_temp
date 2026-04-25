@@ -5,50 +5,65 @@
                 title: { type: #STANDARD, label: 'UXTeam', value: 'Id' }  }
 //                presentationVariant: [{ sortOrder: [{ by: 'Id', direction:  #ASC }] }]
  }
+//Display Multiple views in List Report page for single table
+//@UI.selectionVariant: [{  qualifier: 'All', text: 'All'},
+//                       {  qualifier: 'Active', text: 'Active', filter:'(Active EQ X)'},
+//                       {  qualifier: 'Inactive', text: 'Inactive',filter:'(Active EQ  )'}
+//
+//]
+@UI.selectionVariant: [{  qualifier: 'All', text: 'All'},
+                       {  qualifier: 'Active', text: 'Developers', filter:'Salary EQ 7000'},
+                       {  qualifier: 'Inactive', text: 'Leads', filter:'Salary EQ 9000'     }
+]
+
+
+
 annotate view zc_uxteam_vije with
+
 {
-  @UI.facet: [
-                 { id: 'idHeader' ,
-                   position: 10,
-                   purpose: #HEADER,
-                   type: #DATAPOINT_REFERENCE,
-                   targetQualifier: 'qfFirstName'},
-
-                 { id: 'idHeader2' ,
-                   position: 20,
-                   purpose: #HEADER,
-                   type: #DATAPOINT_REFERENCE,
-                   targetQualifier: 'qfLastName'},
-
-               {
-                id:             'Demo',
-                purpose:         #STANDARD,
-                type:            #IDENTIFICATION_REFERENCE,
-                label:           'Demo',
-                position:        30 }
-               ]
-
-  @UI:{ identification: [{ position: 1, label: 'Id' }] }
+  @UI.facet: [ { id: 'idHeader',
+                 position: 10,
+                 purpose: #HEADER,
+                 type: #DATAPOINT_REFERENCE,
+                 targetQualifier: 'qfFirstName' },
+               { id: 'idHeader2',
+                 position: 20,
+                 purpose: #HEADER,
+                 type: #DATAPOINT_REFERENCE,
+                 targetQualifier: 'qfLastName' },
+               { id: 'Demo',
+                 purpose: #STANDARD,
+                 type: #IDENTIFICATION_REFERENCE,
+                 label: 'Demo',
+                 position: 30 } ]
+  @UI.identification: [ { position: 1, label: 'Id' } ]
   Id;
 
-  @UI: {  lineItem:       [ { position: 20 } ],
-        identification: [ { position: 20 } ],
+  @UI: {  lineItem:       [ { position: 20 , type: #WITH_INTENT_BASED_NAVIGATION, semanticObjectAction: 'display' ,semanticObject: 'bank' }
+  //       { type: #WITH_INTENT_BASED_NAVIGATION, semanticObjectAction: 'display' ,semanticObject: 'bank', label: 'Display Bank' } it will add new column
+       ],
+        identification: [ { position: 20 }
+  //          , { type: #WITH_INTENT_BASED_NAVIGATION, semanticObjectAction: 'display' ,semanticObject: 'bank', label: 'Display Bank' } it will add new column
+        ],
         selectionField: [ { position: 20 } ],
-         dataPoint: { qualifier: 'qfFirstName', title: 'First Name' }}
+         dataPoint: { qualifier: 'qfFirstName', title: 'First Name' }
+
+          }
+  @Consumption.semanticObject: 'bank'
   Firstname;
 
-  @UI: {  lineItem:       [ { position: 30  } ],
-        identification: [ { position: 30 } ],
-        selectionField: [ { position: 30 } ] ,
-        dataPoint: { qualifier: 'qfLastName'  } }
+  @UI.dataPoint.qualifier: 'qfLastName'
+  @UI.identification: [ { position: 30 } ]
+  @UI.lineItem: [ { position: 30 } ]
+  @UI.selectionField: [ { position: 30 } ]
   Lastname;
 
-  @UI: {  lineItem:       [ { position: 40 } ],
-        identification: [ { position: 40 } ] }
+  @UI.identification: [ { position: 40 } ]
+  @UI.lineItem: [ { position: 40 } ]
   Age;
 
-  @UI: {  lineItem:       [ { position: 50 } ],
-        identification: [ { position: 50 } ] }
+  @UI.identification: [ { position: 50 } ]
+  @UI.lineItem: [ { position: 50 } ]
   Role;
 
   @UI: {  lineItem:       [ { position: 60 }
@@ -58,16 +73,18 @@ annotate view zc_uxteam_vije with
        selectionField: [ { position: 60 } ] }
   Salary;
 
-  @UI: {  lineItem:       [ { position: 70 }, { type: #FOR_ACTION, dataAction: 'setActive', label: 'Set Active' },
-                                               { type: #FOR_ACTION, dataAction: 'CopyMember', label: 'Copy' },
-                                               { type: #FOR_ACTION, dataAction: 'CreateInstance', label: 'Create Instance' } ],
-          identification: [ { position: 70 } ] }
+  @UI.identification: [ { position: 70 } ]
+  @UI.lineItem: [ { position: 70 },
+                  { type: #FOR_ACTION, dataAction: 'setActive', label: 'Set Active' },
+                  { type: #FOR_ACTION, dataAction: 'CopyMember', label: 'Copy' },
+                  { type: #FOR_ACTION, dataAction: 'CreateInstance', label: 'Create Instance' } ]
+  @UI.selectionField: [ { position: 70 } ]
   Active;
+
   @UI.hidden: true
-  //@EndUserText.label: 'Last Changed At'
+  // @EndUserText.label: 'Last Changed At'
   LastChangedAt;
 
   @UI.hidden: true
   LocalLastChangedAt;
-
 }

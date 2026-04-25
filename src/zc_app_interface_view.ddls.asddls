@@ -7,7 +7,7 @@
     sizeCategory: #S,
     dataClass: #MIXED
 }
-@Search.searchable: true // specify atleast one filed as default searchable
+@Search.searchable: true // specify atleast one filled as default searchable
 @Metadata.allowExtensions: true
 
 define root view entity zc_app_interface_view
