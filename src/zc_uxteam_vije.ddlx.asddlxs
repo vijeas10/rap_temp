@@ -2,22 +2,18 @@
 @UI: {
   headerInfo: { typeName: 'UX Team',
                 typeNamePlural: 'UX Teams',
+                typeImageUrl: 'sap-icon://employee',
                 title: { type: #STANDARD, label: 'UXTeam', value: 'Id' }  }
 //                presentationVariant: [{ sortOrder: [{ by: 'Id', direction:  #ASC }] }]
  }
 //Display Multiple views in List Report page for single table
-//@UI.selectionVariant: [{  qualifier: 'All', text: 'All'},
-//                       {  qualifier: 'Active', text: 'Active', filter:'(Active EQ X)'},
-//                       {  qualifier: 'Inactive', text: 'Inactive',filter:'(Active EQ  )'}
-//
-//]
 @UI.selectionVariant: [{  qualifier: 'All', text: 'All'},
                        {  qualifier: 'Active', text: 'Developers', filter:'Salary EQ 7000'},
                        {  qualifier: 'Inactive', text: 'Leads', filter:'Salary EQ 9000'     }
 ]
 
 
-
+@UI.lineItem: [{ criticality: 'activecriticality' }]
 annotate view zc_uxteam_vije with
 
 {
@@ -73,8 +69,8 @@ annotate view zc_uxteam_vije with
        selectionField: [ { position: 60 } ] }
   Salary;
 
-  @UI.identification: [ { position: 70 } ]
-  @UI.lineItem: [ { position: 70 },
+  @UI.identification: [ { position: 70 ,criticality: 'activecriticality' ,criticalityRepresentation: #WITHOUT_ICON} ]
+  @UI.lineItem: [ { position: 70 ,criticality: 'activecriticality',criticalityRepresentation: #WITHOUT_ICON},
                   { type: #FOR_ACTION, dataAction: 'setActive', label: 'Set Active' },
                   { type: #FOR_ACTION, dataAction: 'CopyMember', label: 'Copy' },
                   { type: #FOR_ACTION, dataAction: 'CreateInstance', label: 'Create Instance' } ]
@@ -87,4 +83,6 @@ annotate view zc_uxteam_vije with
 
   @UI.hidden: true
   LocalLastChangedAt;
+  @UI.hidden: true
+  activecriticality;
 }

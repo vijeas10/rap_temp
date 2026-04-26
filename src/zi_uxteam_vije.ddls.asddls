@@ -10,10 +10,14 @@ define root view entity ZI_uxteam_vije
       age                   as Age,
       role                  as Role,
       salary                as Salary,
-      active                as Active,
+      active,
       @Semantics.systemDateTime.createdAt: true
       @Semantics.systemDateTime.lastChangedAt: true
       last_changed_at       as LastChangedAt,
       @Semantics.systemDateTime.localInstanceLastChangedAt: true
-      local_last_changed_at as LocalLastChangedAt
+      local_last_changed_at as LocalLastChangedAt,
+      case active
+      when 'X' then 3
+      else 1
+      end                   as activecriticality
 }

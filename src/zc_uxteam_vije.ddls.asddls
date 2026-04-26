@@ -4,7 +4,7 @@
 @Metadata.ignorePropagatedAnnotations: true
 @Metadata.allowExtensions: true
 define root view entity zc_uxteam_vije
- 
+
   as projection on ZI_uxteam_vije
 {
       @EndUserText.label: 'Id'
@@ -24,7 +24,8 @@ define root view entity zc_uxteam_vije
       @EndUserText.label: 'Salary'
       Salary,
       @EndUserText.label: 'Active'
-      Active,
+      active as Active,
       LastChangedAt,
-      LocalLastChangedAt
+      LocalLastChangedAt,
+      activecriticality
 }
